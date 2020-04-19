@@ -2,9 +2,9 @@ var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var rename = require("gulp-rename");
-var karma = require('gulp-karma');
-var runSequence = require('run-sequence');
 var watch = require('gulp-watch');
+
+var KarmaServer = require('karma').Server;
 
 var builds = {
   core: 'build/threestrap-core.js',
@@ -55,7 +55,7 @@ var extra = [
 var bundle = vendor.concat(core).concat(extra);
 
 var test = [
-  'vendor/three.js',
+  'node_modules/three/build/three.js',
 ].concat(bundle).concat([
   'test/**/*.spec.js',
 ]);
@@ -63,69 +63,81 @@ var test = [
 gulp.task('core', function () {
   return gulp.src(core)
     .pipe(concat(builds.core))
-    .pipe(gulp.dest(''));
+    .pipe(gulp.dest('.'));
 });
 
 gulp.task('extra', function () {
   return gulp.src(extra)
     .pipe(concat(builds.extra))
-    .pipe(gulp.dest(''));
+    .pipe(gulp.dest('.'));
 });
 
 gulp.task('bundle', function () {
   return gulp.src(bundle)
     .pipe(concat(builds.bundle))
-    .pipe(gulp.dest(''));
+    .pipe(gulp.dest('.'));
 });
 
-gulp.task('uglify', function () {
+gulp.task('uglify-js', function () {
   return gulp.src(products)
     .pipe(uglify())
     .pipe(rename({
-      ext: ".min.js"
+      extname: ".min.js"
     }))
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('karma', function() {
-  return gulp.src(test)
-    .pipe(karma({
-      configFile: 'karma.conf.js',
-      action: 'single',
-    }));
+gulp.task('karma', function(done) {
+  new KarmaServer({
+    configFile: __dirname + '/karma.conf.js',
+    files: test,
+    singleRun: true,
+  }, function(err) {
+      if(err === 0){
+        done();
+      }
+  }).start();
 });
 
-gulp.task('watch-karma', function() {
-  return gulp.src(test)
-    .pipe(karma({
-      configFile: 'karma.conf.js',
-      action: 'watch',
-    }));
+gulp.task('watch-karma', function(done) {
+  new KarmaServer({
+    configFile: __dirname + '/karma.conf.js',
+    files: test,
+  }, function(err) {
+      if(err === 0){
+        done();
+      }
+  }).start();
 });
 
 gulp.task('watch-build', function () {
-  gulp.src(bundle)
-    .pipe(
-      watch(function(files) {
-        return gulp.start('build');
-      })
-    );
+  // Endless stream mode
+  return watch(bundle, { ignoreInitial: false })
+      .pipe(
+        gulp.start('build', function watchEnd(done) {
+          done();
+        })
+      );
 });
 
 // Main tasks
 
-gulp.task('build', function (callback) {
-  runSequence(['core', 'extra', 'bundle'], callback);
-})
+gulp.task('build',
+  gulp.series('core', 'extra', 'bundle', function buildEnd(done) {
+  done();
+}));
 
-gulp.task('default', function (callback) {
-  runSequence('build', 'uglify', callback);
-});
+gulp.task('default',
+  gulp.series('build', 'uglify-js', function defaultEnd(done) {
+  done();
+}));
 
-gulp.task('test', function (callback) {
-  runSequence('build', 'karma', callback);
-});
+gulp.task('test',
+  gulp.series('build', 'karma', function testEnd(done) {
+  done();
+}));
 
-gulp.task('watch', function (callback) {
-  runSequence('watch-build', 'watch-karma', callback);
-});
+gulp.task('watch',
+  gulp.series('watch-build', 'watch-karma', function watchEnd(done) {
+  done();
+}));
