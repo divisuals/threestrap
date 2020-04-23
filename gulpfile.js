@@ -42,8 +42,12 @@ var core = [
 ];
 
 var extra = [
-  'vendor/stats.min.js',
-  'vendor/controls/*.js',
+  'node_modules/three/examples/js/libs/stats.min.js',
+  'node_modules/three/examples/js/controls/DeviceOrientationControls.js',
+  'node_modules/three/examples/js/controls/FirstPersonControls.js',
+  'node_modules/three/examples/js/controls/OrbitControls.js',
+  'node_modules/three/examples/js/controls/TrackballControls.js',
+  'vendor/controls/VRControls.js',
   'src/extra/stats.js',
   'src/extra/controls.js',
   'src/extra/cursor.js',
