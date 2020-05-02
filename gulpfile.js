@@ -1,10 +1,9 @@
-var gulp = require('gulp');
+const { task, src, dest, series, parallel, pipe, watch } = require('gulp');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var rename = require("gulp-rename");
-var watch = require('gulp-watch');
 
-var KarmaServer = require('karma').Server;
+var karma = require('karma');
 
 var builds = {
   core: 'build/threestrap-core.js',
@@ -60,88 +59,100 @@ var bundle = vendor.concat(core).concat(extra);
 
 var test = [
   'node_modules/three/build/three.js',
-].concat(bundle).concat([
+].concat(builds.bundle).concat([
   'test/**/*.spec.js',
 ]);
 
-gulp.task('core', function () {
-  return gulp.src(core)
+task('core', function () {
+  return src(core)
     .pipe(concat(builds.core))
-    .pipe(gulp.dest('.'));
+    .pipe(dest('.'));
 });
 
-gulp.task('extra', function () {
-  return gulp.src(extra)
+task('extra', function () {
+  return src(extra)
     .pipe(concat(builds.extra))
-    .pipe(gulp.dest('.'));
+    .pipe(dest('.'));
 });
 
-gulp.task('bundle', function () {
-  return gulp.src(bundle)
+task('bundle', function () {
+  return src(bundle)
     .pipe(concat(builds.bundle))
-    .pipe(gulp.dest('.'));
+    .pipe(dest('.'));
 });
 
-gulp.task('uglify-js', function () {
-  return gulp.src(products)
+task('uglify-js', function () {
+  return src(products)
     .pipe(uglify())
     .pipe(rename({
       extname: ".min.js"
     }))
-    .pipe(gulp.dest('build'));
+    .pipe(dest('build'));
 });
 
-gulp.task('karma', function(done) {
-  new KarmaServer({
+task('karma', function(done) {
+  new karma.Server({
     configFile: __dirname + '/karma.conf.js',
     files: test,
     singleRun: true,
   }, function(err) {
-      if(err === 0){
-        done();
+      if (err > 0) {
+        return done(new Error(`Karma exited with status code ${err}`));
       }
+      done();
   }).start();
 });
 
-gulp.task('watch-karma', function(done) {
-  new KarmaServer({
+task('watch-karma', function(done) {
+  new karma.Server({
     configFile: __dirname + '/karma.conf.js',
     files: test,
+    singleRun: false,
   }, function(err) {
-      if(err === 0){
-        done();
+      if (err > 0) {
+          return done(new Error(`Karma (watch) exited with status code ${err}`));
       }
   }).start();
+  done();
 });
 
-gulp.task('watch-build', function () {
-  // Endless stream mode
-  return watch(bundle, { ignoreInitial: false })
-      .pipe(
-        gulp.start('build', function watchEnd(done) {
-          done();
-        })
-      );
+// NEW: Add karma runner, triggered after every build
+task('run-karma', function (done) {
+    new karma.runner.run({
+    configFile: __dirname + '/karma.conf.js',
+    files: test,
+    singleRun: true
+  }, function(err) {
+      if (err > 0) {
+          return done(new Error(`Karma runner exited with status code ${err}`));
+      }
+      done();
+    });
+});
+
+task('watch-build', function(done) {
+  watch(bundle, series('build', 'run-karma'));
+  done();
 });
 
 // Main tasks
 
-gulp.task('build',
-  gulp.series('core', 'extra', 'bundle', function buildEnd(done) {
+task('build',
+  series('core', 'extra', 'bundle', function buildEnd(done) {
   done();
 }));
 
-gulp.task('default',
-  gulp.series('build', 'uglify-js', function defaultEnd(done) {
+task('default',
+  series('build', 'uglify-js', function defaultEnd(done) {
   done();
 }));
 
-gulp.task('test',
-  gulp.series('build', 'karma', function testEnd(done) {
+task('test',
+  series('build', 'karma', function testEnd(done) {
   done();
 }));
 
-gulp.task('watch',
-  gulp.series('watch-build', 'watch-karma', function watchEnd(done) {
+task('watch',
+  series('watch-karma', 'watch-build', function watchEnd(done) {
   done();
 }));
