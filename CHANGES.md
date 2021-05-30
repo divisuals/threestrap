@@ -6,6 +6,8 @@ Changes
 * Loop: Add `each` option for rendering at (integer) reduced frame rates.
 * Update to latest npm packages; add package-lock file and remove build directory
 * Refer to THREE controls instead; remove extra files
+* Upgrade to THREE.js r127
+* Update build (gulp) tooling
 
 0.0.11
 * Time: Provide `warmup` option to wait N frames before starting clock (complements render warmup)

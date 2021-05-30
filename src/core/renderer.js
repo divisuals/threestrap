@@ -1,7 +1,7 @@
 THREE.Bootstrap.registerPlugin('renderer', {
 
   defaults: {
-    klass: THREE.WebGLRenderer,
+    klass: THREE.WebGL1Renderer,
     parameters: {
       depth: true,
       stencil: true,
