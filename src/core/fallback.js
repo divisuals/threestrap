@@ -23,7 +23,7 @@ Bootstrap.registerPlugin("fallback", {
         throw "WebGL unavailable.";
       }
       three.fallback = false;
-    } catch (e) {
+    } catch (e) { // eslint-disable-line no-unused-vars
       const message = this.options.message;
       const begin = this.options.begin;
       const end = this.options.end;
