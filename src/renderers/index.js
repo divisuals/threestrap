@@ -1,2 +1,2 @@
-import "./MultiRenderer";
-import "./VRRenderer";
+import "./MultiRenderer.js";
+import "./VRRenderer.js";

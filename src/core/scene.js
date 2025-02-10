@@ -1,5 +1,5 @@
 import { Scene } from "three";
-import { Bootstrap } from "../bootstrap";
+import { Bootstrap } from "../bootstrap.js";
 
 Bootstrap.registerPlugin("scene", {
   install: function (three) {

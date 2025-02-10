@@ -3,26 +3,27 @@
   <head>
     <meta charset="utf-8" />
     <title>Threestrap - Multiple Renderers</title>
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/three@0.137.0/build/three.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/three@0.137.0/examples/js/renderers/CSS3DRenderer.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="../build/threestrap.js"
-    ></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.173.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.173.0/examples/jsm/",
+          "stats.js": "https://cdn.jsdelivr.net/npm/stats.js@0.17.0/src/Stats.js"
+        }
+      }
+    </script>
   </head>
   <body>
-    <script>
+    <script type="module">
+      import * as THREE from "three";
+      import * as Threestrap from "../src/index.js";
+      import { CSS3DObject, CSS3DRenderer } from "three/addons/renderers/CSS3DRenderer.js";
+
       var three = new Threestrap.Bootstrap({
         renderer: {
           klass: Threestrap.MultiRenderer,
           parameters: {
-            renderers: [THREE.WebGLRenderer, THREE.CSS3DRenderer],
+            renderers: [THREE.WebGLRenderer, CSS3DRenderer],
             parameters: [
               {
                 // WebGLRenderer parameters
@@ -54,7 +55,7 @@
       greeting.style.fontFamily = "Helvetica";
       greeting.style.textAlign = "center";
       greeting.style.backfaceVisibility = "hidden";
-      var greetingObject = new THREE.CSS3DObject(greeting);
+      var greetingObject = new CSS3DObject(greeting);
       greetingObject.scale.set(0.00125, 0.00125, 0.00125);
       greetingObject.position.z = 0.25;
       three.scene.add(greetingObject);

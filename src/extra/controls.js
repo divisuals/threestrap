@@ -1,5 +1,5 @@
 import { PerspectiveCamera } from "three";
-import { Bootstrap } from "../bootstrap";
+import { Bootstrap } from "../bootstrap.js";
 
 Bootstrap.registerPlugin("controls", {
   listen: ["update", "resize", "camera", "this.change"],

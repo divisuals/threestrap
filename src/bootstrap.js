@@ -1,5 +1,5 @@
-import { Api } from "./api";
-import { Binder } from "./binder";
+import { Api } from "./api.js";
+import { Binder } from "./binder.js";
 
 function isString(str) {
   return str && typeof str.valueOf() === "string";

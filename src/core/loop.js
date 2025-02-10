@@ -1,4 +1,4 @@
-import { Bootstrap } from "../bootstrap";
+import { Bootstrap } from "../bootstrap.js";
 
 Bootstrap.registerPlugin("loop", {
   defaults: {

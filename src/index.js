@@ -1,12 +1,12 @@
-import "./aliases";
-import "./binder";
-import "./bootstrap";
-import "./core";
-import "./extra";
+import "./aliases.js";
+import "./binder.js";
+import "./bootstrap.js";
+import "./core/index.js";
+import "./extra/index.js";
 
 // These should probably be in their own build!
-import "./controls";
-import "./renderers";
+import "./controls/index.js";
+import "./renderers/index.js";
 
 export { Api } from "./api.js";
 export { Binder } from "./binder.js";

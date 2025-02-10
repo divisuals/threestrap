@@ -1,5 +1,5 @@
-import { Bootstrap } from "../bootstrap";
-import { Binder } from "../binder";
+import { Bootstrap } from "../bootstrap.js";
+import { Binder } from "../binder.js";
 
 Bootstrap.registerPlugin("bind", {
   install: function (three) {

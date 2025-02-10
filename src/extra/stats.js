@@ -1,5 +1,5 @@
 import { default as Stats } from "stats.js";
-import { Bootstrap } from "../bootstrap";
+import { Bootstrap } from "../bootstrap.js";
 
 Bootstrap.registerPlugin("stats", {
   listen: ["pre", "post"],

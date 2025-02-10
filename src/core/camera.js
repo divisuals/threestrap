@@ -1,5 +1,5 @@
 import { Camera, OrthographicCamera, PerspectiveCamera } from "three";
-import { Bootstrap } from "../bootstrap";
+import { Bootstrap } from "../bootstrap.js";
 
 Bootstrap.registerPlugin("camera", {
   defaults: {

@@ -1,9 +1,9 @@
-import { WebGL1Renderer } from "three";
-import { Bootstrap } from "../bootstrap";
+import { WebGLRenderer } from "three";
+import { Bootstrap } from "../bootstrap.js";
 
 Bootstrap.registerPlugin("renderer", {
   defaults: {
-    klass: WebGL1Renderer,
+    klass: WebGLRenderer,
     parameters: {
       depth: true,
       stencil: true,
