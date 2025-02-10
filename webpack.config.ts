@@ -1,13 +1,13 @@
-import * as path from "node:path"
+import * as nPath from "node:path"
 import TerserPlugin from 'terser-webpack-plugin'
 import type { Configuration } from "webpack"
 import * as glob from "glob"
 
 const LIBRARY_NAME = "Threestrap";
 const PATHS = {
-  entryPoint: path.resolve(__dirname, "src/index.js"),
-  libraryBundles: path.resolve(__dirname, "build"),
-  testBundle: path.resolve(__dirname, "build_tests"),
+  entryPoint: nPath.resolve(__dirname, "src/index.js"),
+  libraryBundles: nPath.resolve(__dirname, "build"),
+  testBundle: nPath.resolve(__dirname, "build_tests"),
   testFiles:  glob.sync("./test/**/*.spec.js"),
 };
 
@@ -24,7 +24,11 @@ const umdBase = (path: string): Configuration => ({
     umdNamedDefine: true,
   },
   resolve: {
+    alias: {
+      'stats.js': nPath.resolve(__dirname, 'node_modules/stats.js'),
+    },
     extensions: [".js"],
+    preferRelative: true,    
   },
   // Activate source maps for the bundles in order to preserve the original
   // source when the user debugs the application
