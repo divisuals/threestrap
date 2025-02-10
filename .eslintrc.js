@@ -6,6 +6,11 @@ module.exports = {
     jasmine: true,
     node: true,
   },
+  ignores: [
+    "**/node_modules/**",
+    "**/build/**",
+    "**/build_tests/**",
+  ],  
   extends: "eslint:recommended",
   parserOptions: {
     ecmaVersion: 12,
