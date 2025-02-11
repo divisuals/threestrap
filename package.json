@@ -23,6 +23,7 @@
     "build": "webpack --mode=production --config-name=threestrap",
     "dev": "webpack --mode=development --watch --config-name=threestrap",
     "prepack": "npm run build",
+    "prepare": "npm run build",
     "lint": "eslint src/**/*.js",
     "test": "webpack --config-name=tests && karma start --single-run --browsers=ChromeHeadless",
     "test:watch": "concurrently --names=webpack,karma -c=magenta,cyan  'webpack --watch --config-name=tests' 'karma start'"
