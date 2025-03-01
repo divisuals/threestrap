@@ -1,5 +1,9 @@
 ## Changes
 
+### 0.5.2
+ - Upgrade to THREE v0.173.0
+ - Updates to dev dependencies, linting
+
 ### 0.5.1
   - Changed how Threestrap imports ThreeJS. Previously, Threestrap (usually) imported from `three/src`. Now it consistently imports from `three`. This change should generally not affect users unless they were using `instanceof` checks.
   - Fixed tests for CI [#28](https://github.com/unconed/threestrap/pull/28)

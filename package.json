@@ -1,6 +1,6 @@
 {
   "name": "threestrap",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Minimal Three.js Bootstrapper",
   "repository": {
     "type": "git",
@@ -54,5 +54,8 @@
     "webpack-stream": "^7.0.0"
   },
   "author": "Steven Wittens",
+  "contributors": [
+    "Divisuals"
+  ],
   "license": "MIT"
 }
